@@ -25,12 +25,14 @@ body {
     background: var(--bg-gradient);
     font-family: 'Playfair Display', serif;
     overflow: hidden;
-    color: white;
+    color: white; /* Ensures all main text is white and readable */
 }
 
-/* --- Screen Transitions --- */
+/* --- Screen Layout & Visibility --- */
 .screen {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: flex;
@@ -49,6 +51,11 @@ body {
 .screen.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* --- Login Screen --- */
@@ -59,14 +66,17 @@ body {
     padding: 40px;
     border-radius: 20px;
     text-align: center;
-    max-width: 400px;
+    max-width: 450px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 50;
 }
 
 .login-box h2 {
     font-size: 24px;
     margin-bottom: 25px;
     font-weight: 600;
+    line-height: 1.4;
+    color: white;
 }
 
 .input-group {
@@ -83,12 +93,7 @@ input[type="password"] {
     outline: none;
     font-size: 16px;
     font-family: inherit;
-}
-
-button {
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    width: 60%;
 }
 
 #submit-btn {
@@ -99,16 +104,22 @@ button {
     color: #1a1a1a;
     font-weight: bold;
     font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-#submit-btn:hover { background: var(--pattern-purple); color: white; }
+#submit-btn:hover { 
+    background: var(--pattern-purple); 
+    color: white; 
+}
 
 #error-msg { color: #ff6b6b; font-size: 14px; margin-bottom: 20px; }
 #success-msg { color: #51cf66; font-size: 18px; margin-bottom: 20px; }
-.hidden { display: none !important; }
 
 /* Hints */
 .hints-container { margin-top: 25px; display: flex; flex-direction: column; gap: 15px; }
+.hint-row { display: flex; justify-content: center; align-items: center; min-height: 35px; }
+
 .hint-btn {
     background: transparent;
     border: 1px solid var(--gold-trim);
@@ -116,8 +127,11 @@ button {
     padding: 8px 15px;
     border-radius: 20px;
     font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 .hint-btn:hover { background: rgba(212, 175, 55, 0.2); }
+
 .hint-text {
     font-family: 'Dancing Script', cursive;
     font-size: 24px;
@@ -128,7 +142,7 @@ button {
 .modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -141,6 +155,7 @@ button {
     border-radius: 15px;
     padding: 30px;
     text-align: center;
+    color: white;
 }
 
 .ttt-board {
@@ -173,7 +188,7 @@ button {
 
 .modal-actions { display: flex; justify-content: center; gap: 10px; }
 .secondary-btn {
-    background: #333; color: white; border: none; padding: 8px 15px; border-radius: 5px;
+    background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-family: inherit;
 }
 .secondary-btn:hover { background: #555; }
 
@@ -203,6 +218,8 @@ button {
     height: 60px;
     font-size: 24px;
     backdrop-filter: blur(5px);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 .nav-btn:hover { border-color: var(--pattern-pink); transform: scale(1.1); }
 .nav-btn:active { transform: scale(0.95); }
@@ -214,7 +231,6 @@ button {
     perspective: 1200px;
 }
 
-/* Include all your previous card CSS here exactly as it was! */
 .card {
     position: absolute;
     width: 100%;
@@ -237,11 +253,12 @@ button {
 .card-front::after {
     content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid var(--gold-trim); border-radius: 8px; pointer-events: none;
 }
-.corner { position: absolute; display: flex; flex-direction: column; align-items: center; line-height: 1; font-family: 'Playfair Display', serif; font-size: 26px; }
+.corner { position: absolute; display: flex; flex-direction: column; align-items: center; line-height: 1; font-family: 'Playfair Display', serif; font-size: 26px; color: var(--card-black); }
 .top-left { top: 20px; left: 20px; }
 .bottom-right { bottom: 20px; right: 20px; transform: rotate(180deg); }
 .suit-red { color: var(--card-red); }
 .suit-black { color: var(--card-black); }
+
 .sticky-note {
     position: relative; background: var(--sticky-note-bg); width: 75%; min-height: 50%; padding: 30px 20px; border-radius: 2px 2px 15px 2px; box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15); display: flex; justify-content: center; align-items: center; z-index: 5; transform: rotate(-2deg);
 }
@@ -249,10 +266,16 @@ button {
     content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 60px; height: 25px; background: rgba(255, 255, 255, 0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.1); backdrop-filter: blur(2px);
 }
 .sticky-note-text { font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--sticky-note-text); text-align: center; line-height: 1.2; }
+
+/* Intricate Diamond Pattern for the back */
 .card-back {
     background-color: var(--pattern-purple);
-    background-image: linear-gradient(45deg, var(--pattern-pink) 25%, transparent 25%, transparent 75%, var(--pattern-pink) 75%, var(--pattern-pink)), linear-gradient(45deg, var(--pattern-pink) 25%, transparent 25%, transparent 75%, var(--pattern-pink) 75%, var(--pattern-pink));
-    background-size: 40px 40px; background-position: 0 0, 20px 20px; border: 10px solid white;
+    background-image: 
+        linear-gradient(45deg, var(--pattern-pink) 25%, transparent 25%, transparent 75%, var(--pattern-pink) 75%, var(--pattern-pink)), 
+        linear-gradient(45deg, var(--pattern-pink) 25%, transparent 25%, transparent 75%, var(--pattern-pink) 75%, var(--pattern-pink));
+    background-size: 40px 40px; 
+    background-position: 0 0, 20px 20px; 
+    border: 10px solid white;
 }
 .card-back::after {
     content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border: 2px solid rgba(212, 175, 55, 0.7); border-radius: 4px; pointer-events: none;
