@@ -1,11 +1,19 @@
+/* style.css */
 :root {
     /* Color Palette */
-    --bg-color: #1a1a1a;
+    --bg-gradient: radial-gradient(circle, #330000 0%, #000000 100%);
     --card-bg: #fdfdfd;
     --card-red: #d32f2f;
     --card-black: #1a1a1a;
-    --card-back-pattern: #8b0000;
     --shadow-color: rgba(0, 0, 0, 0.3);
+
+    /* Card Back Colors (Inspired by image_2.png, but pink/purple) */
+    --card-back-stripes: #ffb6c1, #ffb6c1 10px, #9370db 10px, #9370db 20px;
+
+    /* Sticky Note Colors */
+    --sticky-note-bg: #ffc0cb;
+    --sticky-note-text: #1a1a1a;
+    --sticky-note-shadow: rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -14,7 +22,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg-color);
+    background: var(--bg-gradient);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
 }
@@ -37,14 +45,14 @@ body {
     box-shadow: 2px 2px 10px var(--shadow-color);
 }
 
-/* 3D Flip state */
+/* 3D Flip state (showing standard front) */
 .card.flipped {
     transform: rotateY(180deg) !important; /* overrides the random Z rotation */
     z-index: 100 !important; /* Bring flipped card to absolute top */
     box-shadow: -2px 5px 15px var(--shadow-color);
 }
 
-/* Slide off animation */
+/* Slide off animation (keeping standard front) */
 .card.slide-off {
     transform: translateX(150%) rotateY(180deg) rotateZ(20deg) !important;
     opacity: 0;
@@ -58,56 +66,99 @@ body {
     backface-visibility: hidden;
     border-radius: 15px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     box-sizing: border-box;
     padding: 20px;
+}
+
+/* The front of the playing card (Standard face up) */
+.card-front {
+    transform: rotateY(180deg);
     background-color: var(--card-bg);
     border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* The back of the playing card (face down) */
-.card-front {
-    background: repeating-linear-gradient(
-        45deg,
-        var(--card-red),
-        var(--card-red) 10px,
-        var(--card-back-pattern) 10px,
-        var(--card-back-pattern) 20px
-    );
-    border: 8px solid white;
-}
-
-/* The front of the playing card (face up, with text) */
-.card-back {
-    transform: rotateY(180deg);
-    text-align: center;
-    background-color: var(--card-bg);
-}
-
-.suit-top-left, .suit-bottom-right {
+/* Standard corner info (inspired by standard deck cards) */
+.corner {
     position: absolute;
-    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+    font-weight: 700;
+    font-family: 'Times New Roman', Times, serif;
+    pointer-events: none;
 }
 
-.suit-top-left {
-    top: 15px;
-    left: 15px;
+.suit-symbol {
+    font-size: 20px;
 }
 
-.suit-bottom-right {
-    bottom: 15px;
-    right: 15px;
+.top-left {
+    top: 10px;
+    left: 10px;
+}
+
+.bottom-right {
+    bottom: 10px;
+    right: 10px;
     transform: rotate(180deg);
 }
 
-.card-text {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 1.4;
+/* Color classes for ranks and suits */
+.rank-value, .suit-symbol { font-weight: inherit; }
+.suit-red .rank-value, .suit-red .suit-symbol { color: var(--card-red); }
+.suit-black .rank-value, .suit-black .suit-symbol { color: var(--card-black); }
+
+/* The new central Sticky Note */
+.sticky-note {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-3deg);
+    background-color: var(--sticky-note-bg);
+    width: 80%;
+    height: 60%;
+    border-radius: 5px;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px 6px var(--sticky-note-shadow), inset 0px 0px 5px rgba(255, 255, 255, 0.4);
+    pointer-events: none; /* Let clicks pass through to the card */
 }
 
-/* Suit colors */
-.suit-red { color: var(--card-red); }
-.suit-black { color: var(--card-black); }
+/* The pink page-curl effect */
+.sticky-note::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50.1%, rgba(0,0,0,0.1) 100%), var(--sticky-note-bg);
+    box-shadow: -2px 2px 3px rgba(0,0,0,0.2);
+    border-radius: 0 0 0 5px;
+    clip-path: polygon(0 100%, 100% 100%, 100% 0);
+}
+
+/* Text inside the sticky note */
+.sticky-note-text {
+    font-family: 'Segoe Print', 'Cursive', sans-serif; /* A friendly, clean font */
+    font-size: 16px;
+    color: var(--sticky-note-text);
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* The back of the playing card (Face down messy stack, inspired by image_2.png pattern) */
+.card-back {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--card-back-stripes)
+    );
+    border: 8px solid white;
+}
