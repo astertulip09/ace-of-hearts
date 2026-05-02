@@ -1,14 +1,76 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our 52 Reasons Card Deck</title>
+    <title>Our 52 Reasons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="deck-container"></div>
+
+    <!-- 1. Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-box">
+            <h2>Hi Azwad! To unlock this deck of cards, please enter the password:</h2>
+            <div class="input-group">
+                <input type="password" id="password-input" placeholder="Password...">
+                <button id="submit-btn">Enter</button>
+            </div>
+            <p id="error-msg" class="hidden">Wrong password, please try again</p>
+            <p id="success-msg" class="hidden">Correct password! ❤️</p>
+            
+            <div class="hints-container">
+                <div class="hint-row">
+                    <button class="hint-btn" id="btn-hint-1">Play to Unlock Hint 1</button>
+                    <span id="text-hint-1" class="hint-text hidden">Hint 1: Confession</span>
+                </div>
+                <div class="hint-row">
+                    <button class="hint-btn hidden" id="btn-hint-2">Play to Unlock Hint 2</button>
+                    <span id="text-hint-2" class="hint-text hidden">Hint 2: YYYYMMDD</span>
+                </div>
+                <div class="hint-row">
+                    <button class="hint-btn hidden" id="btn-hint-3">Play to Unlock Hint 3</button>
+                    <span id="text-hint-3" class="hint-text hidden">Hint 3: Backwards</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Tic Tac Toe Modal -->
+    <div id="ttt-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="ttt-title">Tic-Tac-Toe</h3>
+            <p id="ttt-instructions">Win to unlock the hint! You are 'X'.</p>
+            <div id="ttt-board" class="ttt-board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            <p id="ttt-status">Your turn...</p>
+            <div class="modal-actions">
+                <button id="ttt-restart" class="secondary-btn">Restart Game</button>
+                <button id="ttt-close" class="secondary-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Main Content (Deck) -->
+    <div id="main-content" class="screen hidden">
+        <h1 class="deck-title">52 things I love about you &lt;33</h1>
+        <div class="table-container">
+            <button id="prev-btn" class="nav-btn" aria-label="Previous Card">&#10094;</button>
+            <div id="deck-container"></div>
+            <button id="next-btn" class="nav-btn" aria-label="Next Card">&#10095;</button>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
