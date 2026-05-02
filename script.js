@@ -1,5 +1,7 @@
+// script.js
+
 // Clearly labeled array for the card text
-const cardText = [
+const originalMessages = [
     "your sense of humour",
     "your adorable \"hi\" jokes",
     "your sweet head pats",
@@ -54,41 +56,75 @@ const cardText = [
     "everything you have said and done that has made you become my comfort person whom i trust and love so much"
 ];
 
+// Fisher-Yates Shuffle for the messages
+const shuffledMessages = [...originalMessages];
+for (let i = shuffledMessages.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledMessages[i], shuffledMessages[j]] = [shuffledMessages[j], shuffledMessages[i]];
+}
+
+// Data for standard deck ranks and suits
+const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 const suits = [
-    { symbol: '♥', colorClass: 'suit-red' },
-    { symbol: '♦', colorClass: 'suit-red' },
-    { symbol: '♠', colorClass: 'suit-black' },
-    { symbol: '♣', colorClass: 'suit-black' }
+    { name: 'hearts', symbol: '♥', colorClass: 'suit-red' },
+    { name: 'diamonds', symbol: '♦', colorClass: 'suit-red' },
+    { name: 'spades', symbol: '♠', colorClass: 'suit-black' },
+    { name: 'clubs', symbol: '♣', colorClass: 'suit-black' }
 ];
+
+const fullDeck = [];
+
+// Combine messages with a standard deck structure (pair 52 messages with 52 cards)
+let messageIndex = 0;
+suits.forEach(suit => {
+    ranks.forEach(rank => {
+        fullDeck.push({
+            rank,
+            suit,
+            message: shuffledMessages[messageIndex++]
+        });
+    });
+});
 
 const deckContainer = document.getElementById('deck-container');
 
-// We want the first item in the array to be the top card, 
-// so we need to render the last items first (bottom of the deck).
-cardText.reverse().forEach((text, index) => {
-    // Determine standard suit cyclically
-    const suit = suits[index % 4];
-    
+// Reverse the array so the first card in the initial stack view is the last message paired
+fullDeck.reverse().forEach((cardData, index) => {
     // Calculate z-index (higher index = higher on stack)
     const zIndex = index + 1;
     
-    // Random rotation between -3deg and 3deg
-    const randomRotation = (Math.random() * 6) - 3;
+    // Random rotation between -3deg and 3deg for standard messy pile look
+    const randomRotationZ = (Math.random() * 6) - 3;
 
     // Create Card element
     const card = document.createElement('div');
     card.classList.add('card');
     card.style.zIndex = zIndex;
-    card.style.transform = `rotateZ(${randomRotation}deg)`;
+    card.style.transform = `rotateZ(${randomRotationZ}deg)`;
     
-    // Create Faces
-    card.innerHTML = `
-        <div class="card-face card-front"></div>
-        <div class="card-face card-back ${suit.colorClass}">
-            <div class="suit-top-left">${suit.symbol}</div>
-            <div class="card-text">${text}</div>
-            <div class="suit-bottom-right">${suit.symbol}</div>
+    // Standard Card Front HTML
+    const cardFrontHTML = `
+        <div class="corner top-left ${cardData.suit.colorClass}">
+            <div class="rank-value">${cardData.rank}</div>
+            <div class="suit-symbol">${cardData.suit.symbol}</div>
         </div>
+        
+        <div class="sticky-note">
+            <div class="sticky-note-text">${cardData.message}</div>
+        </div>
+        
+        <div class="corner bottom-right ${cardData.suit.colorClass}">
+            <div class="rank-value">${cardData.rank}</div>
+            <div class="suit-symbol">${cardData.suit.symbol}</div>
+        </div>
+    `;
+
+    // Create Faces (inspired by the messy look of image_1.png and image_2.png but with new designs)
+    card.innerHTML = `
+        <div class="card-face card-front">
+            ${cardFrontHTML}
+        </div>
+        <div class="card-face card-back"></div>
     `;
 
     // Interaction Logic
@@ -100,10 +136,10 @@ cardText.reverse().forEach((text, index) => {
         if (card !== topCard) return;
 
         if (!card.classList.contains('flipped')) {
-            // First click: Flip
+            // First click: Flip to show the standard card front with sticky note
             card.classList.add('flipped');
         } else {
-            // Second click: Slide off
+            // Second click: Slide off (maintaining standard front view during animation)
             card.classList.add('slide-off');
             // Remove from DOM after animation completes to clean up
             setTimeout(() => {
