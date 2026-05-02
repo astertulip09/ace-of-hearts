@@ -1,164 +1,259 @@
-/* style.css */
 :root {
     /* Color Palette */
-    --bg-gradient: radial-gradient(circle, #330000 0%, #000000 100%);
-    --card-bg: #fdfdfd;
-    --card-red: #d32f2f;
+    --bg-gradient: radial-gradient(circle at center, #2a0010 0%, #000000 100%);
+    --card-bg: #fffefa;
+    --card-red: #c0392b;
     --card-black: #1a1a1a;
-    --shadow-color: rgba(0, 0, 0, 0.3);
-
-    /* Card Back Colors (Inspired by image_2.png, but pink/purple) */
-    --card-back-stripes: #ffb6c1, #ffb6c1 10px, #9370db 10px, #9370db 20px;
-
-    /* Sticky Note Colors */
-    --sticky-note-bg: #ffc0cb;
-    --sticky-note-text: #1a1a1a;
-    --sticky-note-shadow: rgba(0, 0, 0, 0.2);
+    --gold-trim: #d4af37;
+    --pattern-pink: #ffb6c1;
+    --pattern-purple: #9370db;
+    --sticky-note-bg: linear-gradient(135deg, #ffe4e1 0%, #ffb6c1 100%);
+    --sticky-note-text: #333;
+    
+    /* UI Elements */
+    --ui-glass: rgba(255, 255, 255, 0.1);
+    --ui-glass-border: rgba(255, 255, 255, 0.2);
 }
 
 body {
     margin: 0;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background: var(--bg-gradient);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Playfair Display', serif;
     overflow: hidden;
+    color: white;
 }
+
+/* --- Screen Transitions --- */
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- Login Screen --- */
+.login-box {
+    background: var(--ui-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--ui-glass-border);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.login-box h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+input[type="password"] {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#submit-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background: var(--pattern-pink);
+    color: #1a1a1a;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#submit-btn:hover { background: var(--pattern-purple); color: white; }
+
+#error-msg { color: #ff6b6b; font-size: 14px; margin-bottom: 20px; }
+#success-msg { color: #51cf66; font-size: 18px; margin-bottom: 20px; }
+.hidden { display: none !important; }
+
+/* Hints */
+.hints-container { margin-top: 25px; display: flex; flex-direction: column; gap: 15px; }
+.hint-btn {
+    background: transparent;
+    border: 1px solid var(--gold-trim);
+    color: var(--gold-trim);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+.hint-btn:hover { background: rgba(212, 175, 55, 0.2); }
+.hint-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    color: var(--pattern-pink);
+}
+
+/* --- Tic Tac Toe Modal --- */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #1a1a1a;
+    border: 2px solid var(--pattern-purple);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+}
+
+.ttt-board {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
+    gap: 5px;
+    margin: 20px auto;
+    background: var(--gold-trim);
+    border: 5px solid var(--gold-trim);
+    border-radius: 10px;
+}
+
+.cell {
+    background: #2a2a2a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-family: sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+}
+
+.cell.x { color: var(--pattern-pink); }
+.cell.o { color: var(--pattern-purple); }
+
+#ttt-status { margin-bottom: 20px; font-size: 18px; }
+
+.modal-actions { display: flex; justify-content: center; gap: 10px; }
+.secondary-btn {
+    background: #333; color: white; border: none; padding: 8px 15px; border-radius: 5px;
+}
+.secondary-btn:hover { background: #555; }
+
+/* --- Deck Area --- */
+.deck-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 42px;
+    color: var(--pattern-pink);
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+.table-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    z-index: 10;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    backdrop-filter: blur(5px);
+}
+.nav-btn:hover { border-color: var(--pattern-pink); transform: scale(1.1); }
+.nav-btn:active { transform: scale(0.95); }
 
 #deck-container {
     position: relative;
-    width: 300px;
-    height: 420px;
-    perspective: 1000px; /* Required for 3D effect */
+    width: 320px;
+    height: 450px;
+    perspective: 1200px;
 }
 
+/* Include all your previous card CSS here exactly as it was! */
 .card {
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 15px;
+    border-radius: 18px;
     cursor: pointer;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), opacity 0.4s;
-    box-shadow: 2px 2px 10px var(--shadow-color);
+    transform: translateX(var(--tx, 0px)) rotateY(var(--ry, 0deg)) rotateZ(var(--rz, 0deg));
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.4);
 }
-
-/* 3D Flip state (showing standard front) */
-.card.flipped {
-    transform: rotateY(180deg) !important; /* overrides the random Z rotation */
-    z-index: 100 !important; /* Bring flipped card to absolute top */
-    box-shadow: -2px 5px 15px var(--shadow-color);
-}
-
-/* Slide off animation (keeping standard front) */
-.card.slide-off {
-    transform: translateX(150%) rotateY(180deg) rotateZ(20deg) !important;
-    opacity: 0;
-    pointer-events: none;
-}
-
+.card.flipped { --ry: 180deg; box-shadow: -5px 10px 25px rgba(0, 0, 0, 0.5); }
+.card.discarded { --tx: -150%; --ry: 0deg; opacity: 0; pointer-events: none; }
 .card-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 15px;
-    display: flex;
-    box-sizing: border-box;
-    padding: 20px;
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 18px; box-sizing: border-box;
 }
-
-/* The front of the playing card (Standard face up) */
 .card-front {
-    transform: rotateY(180deg);
-    background-color: var(--card-bg);
-    border: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    transform: rotateY(180deg); background-color: var(--card-bg); border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
-
-/* Standard corner info (inspired by standard deck cards) */
-.corner {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.1;
-    font-weight: 700;
-    font-family: 'Times New Roman', Times, serif;
-    pointer-events: none;
+.card-front::after {
+    content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid var(--gold-trim); border-radius: 8px; pointer-events: none;
 }
-
-.suit-symbol {
-    font-size: 20px;
-}
-
-.top-left {
-    top: 10px;
-    left: 10px;
-}
-
-.bottom-right {
-    bottom: 10px;
-    right: 10px;
-    transform: rotate(180deg);
-}
-
-/* Color classes for ranks and suits */
-.rank-value, .suit-symbol { font-weight: inherit; }
-.suit-red .rank-value, .suit-red .suit-symbol { color: var(--card-red); }
-.suit-black .rank-value, .suit-black .suit-symbol { color: var(--card-black); }
-
-/* The new central Sticky Note */
+.corner { position: absolute; display: flex; flex-direction: column; align-items: center; line-height: 1; font-family: 'Playfair Display', serif; font-size: 26px; }
+.top-left { top: 20px; left: 20px; }
+.bottom-right { bottom: 20px; right: 20px; transform: rotate(180deg); }
+.suit-red { color: var(--card-red); }
+.suit-black { color: var(--card-black); }
 .sticky-note {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-3deg);
-    background-color: var(--sticky-note-bg);
-    width: 80%;
-    height: 60%;
-    border-radius: 5px;
-    padding: 15px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 2px 2px 6px var(--sticky-note-shadow), inset 0px 0px 5px rgba(255, 255, 255, 0.4);
-    pointer-events: none; /* Let clicks pass through to the card */
+    position: relative; background: var(--sticky-note-bg); width: 75%; min-height: 50%; padding: 30px 20px; border-radius: 2px 2px 15px 2px; box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15); display: flex; justify-content: center; align-items: center; z-index: 5; transform: rotate(-2deg);
 }
-
-/* The pink page-curl effect */
-.sticky-note::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 30px;
-    height: 30px;
-    background: linear-gradient(135deg, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50.1%, rgba(0,0,0,0.1) 100%), var(--sticky-note-bg);
-    box-shadow: -2px 2px 3px rgba(0,0,0,0.2);
-    border-radius: 0 0 0 5px;
-    clip-path: polygon(0 100%, 100% 100%, 100% 0);
+.sticky-note::before {
+    content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 60px; height: 25px; background: rgba(255, 255, 255, 0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.1); backdrop-filter: blur(2px);
 }
-
-/* Text inside the sticky note */
-.sticky-note-text {
-    font-family: 'Segoe Print', 'Cursive', sans-serif; /* A friendly, clean font */
-    font-size: 16px;
-    color: var(--sticky-note-text);
-    text-align: center;
-    line-height: 1.3;
-}
-
-/* The back of the playing card (Face down messy stack, inspired by image_2.png pattern) */
+.sticky-note-text { font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--sticky-note-text); text-align: center; line-height: 1.2; }
 .card-back {
-    background: repeating-linear-gradient(
-        45deg,
-        var(--card-back-stripes)
-    );
-    border: 8px solid white;
+    background-color: var(--pattern-purple);
+    background-image: linear-gradient(45deg, var(--pattern-pink) 25%, transparent 25%, transparent 75%, var(--pattern-pink) 75%, var(--pattern-pink)), linear-gradient(45deg, var(--pattern-pink) 25%, transparent 25%, transparent 75%, var(--pattern-pink) 75%, var(--pattern-pink));
+    background-size: 40px 40px; background-position: 0 0, 20px 20px; border: 10px solid white;
+}
+.card-back::after {
+    content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border: 2px solid rgba(212, 175, 55, 0.7); border-radius: 4px; pointer-events: none;
 }
