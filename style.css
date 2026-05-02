@@ -261,24 +261,35 @@ input[type="password"] {
 .suit-black { color: var(--card-black); }
 
 .sticky-note {
-    position: relative; background: var(--sticky-note-bg); width: 75%; min-height: 50%; padding: 30px 20px; border-radius: 2px 2px 15px 2px; box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15); display: flex; justify-content: center; align-items: center; z-index: 5; transform: rotate(-2deg);
+    position: relative; 
+    background: var(--sticky-note-bg); 
+    width: 75%; 
+    min-height: 50%; 
+    padding: 30px 20px; 
+    border-radius: 2px 2px 15px 2px; 
+    /* Made the shadow stronger to bring back the realistic 3D feel! */
+    box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.35); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 5; 
+    transform: rotate(-2deg);
 }
+
 .sticky-note::before {
-    content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 60px; height: 25px; background: rgba(255, 255, 255, 0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.1); backdrop-filter: blur(2px);
+    content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 60px; height: 25px; background: rgba(255, 255, 255, 0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.15); backdrop-filter: blur(2px);
 }
+
 .sticky-note-text { 
-    font-family: 'Lora', serif; /* New elegant, readable font */
-    font-size: 21px; /* Slightly smaller so long messages fit perfectly */
+    font-family: 'Lora', serif; 
+    font-size: 21px; 
     font-weight: 500;
     color: var(--sticky-note-text); 
     text-align: center; 
     line-height: 1.4; 
-    
-    /* --- Fixes for blurry 3D text --- */
+    /* Removed the 3D translate code that was causing the blurriness! */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transform: translateZ(1px); 
-    backface-visibility: hidden;
 }
 /* Intricate Diamond Pattern for the back */
 .card-back {
