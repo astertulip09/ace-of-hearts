@@ -1,0 +1,113 @@
+:root {
+    /* Color Palette */
+    --bg-color: #1a1a1a;
+    --card-bg: #fdfdfd;
+    --card-red: #d32f2f;
+    --card-black: #1a1a1a;
+    --card-back-pattern: #8b0000;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+}
+
+#deck-container {
+    position: relative;
+    width: 300px;
+    height: 420px;
+    perspective: 1000px; /* Required for 3D effect */
+}
+
+.card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), opacity 0.4s;
+    box-shadow: 2px 2px 10px var(--shadow-color);
+}
+
+/* 3D Flip state */
+.card.flipped {
+    transform: rotateY(180deg) !important; /* overrides the random Z rotation */
+    z-index: 100 !important; /* Bring flipped card to absolute top */
+    box-shadow: -2px 5px 15px var(--shadow-color);
+}
+
+/* Slide off animation */
+.card.slide-off {
+    transform: translateX(150%) rotateY(180deg) rotateZ(20deg) !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border: 1px solid #ccc;
+}
+
+/* The back of the playing card (face down) */
+.card-front {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--card-red),
+        var(--card-red) 10px,
+        var(--card-back-pattern) 10px,
+        var(--card-back-pattern) 20px
+    );
+    border: 8px solid white;
+}
+
+/* The front of the playing card (face up, with text) */
+.card-back {
+    transform: rotateY(180deg);
+    text-align: center;
+    background-color: var(--card-bg);
+}
+
+.suit-top-left, .suit-bottom-right {
+    position: absolute;
+    font-size: 24px;
+}
+
+.suit-top-left {
+    top: 15px;
+    left: 15px;
+}
+
+.suit-bottom-right {
+    bottom: 15px;
+    right: 15px;
+    transform: rotate(180deg);
+}
+
+.card-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Suit colors */
+.suit-red { color: var(--card-red); }
+.suit-black { color: var(--card-black); }
